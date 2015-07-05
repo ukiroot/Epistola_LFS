@@ -1,0 +1,36 @@
+diff --git a/src/tls/tls.h b/src/tls/tls.h
+index 5b4851d..9311c47 100644
+--- a/src/tls/tls.h
++++ b/src/tls/tls.h
+@@ -72,6 +72,7 @@ extern const NAME_CODE tls_level_table[];
+ #include <openssl/x509v3.h>
+ #include <openssl/rand.h>
+ #include <openssl/ssl.h>
++#include <openssl/conf.h>
+ 
+  /* Appease indent(1) */
+ #define x509_stack_t STACK_OF(X509)
+diff --git a/src/tls/tls_client.c b/src/tls/tls_client.c
+index 039e704..9a7051d 100644
+--- a/src/tls/tls_client.c
++++ b/src/tls/tls_client.c
+@@ -304,6 +304,7 @@ TLS_APPL_STATE *tls_client_init(const TLS_CLIENT_INIT_PROPS *props)
+      * just error codes, so we load the error_strings.
+      */
+     SSL_load_error_strings();
++    OPENSSL_config(NULL);
+     OpenSSL_add_ssl_algorithms();
+ 
+     /*
+diff --git a/src/tls/tls_server.c b/src/tls/tls_server.c
+index 279ba37..b0288be 100644
+--- a/src/tls/tls_server.c
++++ b/src/tls/tls_server.c
+@@ -361,6 +361,7 @@ TLS_APPL_STATE *tls_server_init(const TLS_SERVER_INIT_PROPS *props)
+      * just error codes, so we load the error_strings.
+      */
+     SSL_load_error_strings();
++    OPENSSL_config(NULL);
+     OpenSSL_add_ssl_algorithms();
+ 
+     /*

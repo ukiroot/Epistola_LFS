@@ -1,0 +1,41 @@
+diff --git a/src/lib-ssl-iostream/iostream-openssl-context.c b/src/lib-ssl-iostream/iostream-openssl-context.c
+index b520749..c061ee8 100644
+--- a/src/lib-ssl-iostream/iostream-openssl-context.c
++++ b/src/lib-ssl-iostream/iostream-openssl-context.c
+@@ -11,6 +11,7 @@
+ #include <openssl/ssl.h>
+ #include <openssl/err.h>
+ #include <openssl/rand.h>
++#include <openssl/conf.h>
+ 
+ #if !defined(OPENSSL_NO_ECDH) && OPENSSL_VERSION_NUMBER >= 0x10000000L
+ #  define HAVE_ECDH
+@@ -601,6 +602,7 @@ static int ssl_iostream_init_global(const struct ssl_iostream_settings *set,
+                return 0;
+ 
+        ssl_global_initialized = TRUE;
++       OPENSSL_config(NULL);
+        SSL_library_init();
+        SSL_load_error_strings();
+        OpenSSL_add_all_algorithms();
+diff --git a/src/login-common/ssl-proxy-openssl.c b/src/login-common/ssl-proxy-openssl.c
+index c77881e..a425e5c 100644
+--- a/src/login-common/ssl-proxy-openssl.c
++++ b/src/login-common/ssl-proxy-openssl.c
+@@ -28,6 +28,7 @@
+ #include <openssl/ssl.h>
+ #include <openssl/err.h>
+ #include <openssl/rand.h>
++#include <openssl/conf.h>
+ 
+ #if !defined(OPENSSL_NO_ECDH) && OPENSSL_VERSION_NUMBER >= 0x10000000L
+ #  define HAVE_ECDH
+@@ -1383,7 +1384,7 @@ void ssl_proxy_init(void)
+ 
+        if (strcmp(ssl_set->ssl, "no") == 0)
+                return;
+-
++       OPENSSL_config(NULL);
+        SSL_library_init();
+        SSL_load_error_strings();
+        OpenSSL_add_all_algorithms();
